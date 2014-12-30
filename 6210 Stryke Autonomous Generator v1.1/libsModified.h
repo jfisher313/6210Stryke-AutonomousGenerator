@@ -27,13 +27,7 @@ int getDriveDir(int power) {
 //Averages out the two paramters entered and returns a integer
 //Failsafe if either left-side motor encoder or right-side motor encoder dies
 int getEncoderAverage(int leftMotor, int rightMotor) {
-	if (abs(leftMotor) < 3) {
-		return rightMotor;
-	}
-	else if (abs(rightMotor) < 3) {
-		return leftMotor;
-	}
-	return (leftMotor + rightMotor) / 2;
+	return leftMotor;
 }
 
 //Sets the left-side drive motors to the first parameter entered and the right-side drive motors to the second parameter
@@ -81,10 +75,10 @@ void moveTo(int power, int deg, float threshold = 2.0, long time = 5000) {
 			// If not, lower the speed of the required side of the robot to adjust back to 0
 			else {
 				if (heading > 0) {
-					setMotors((power / 4) * getDriveDir(power), power);
+					setMotors((power / 4), power);
 				}
 				if (heading < 0) {
-					setMotors(power, (power / 4) * getDriveDir(power));
+					setMotors(power, (power / 4));
 				}
 			}
 			wait1Msec(20);
@@ -104,10 +98,10 @@ void moveTo(int power, int deg, float threshold = 2.0, long time = 5000) {
 			// If not, lower the speed of the required side of the robot to adjust back to 0
 			else {
 				if (heading > 0) {
-					setMotors(power, (power / 4) * getDriveDir(power));
+					setMotors(power, (power / 4));
 				}
 				if (heading < 0) {
-					setMotors((power / 4) * getDriveDir(power), power);
+					setMotors((power / 4), power);
 				}
 			}
 
@@ -117,6 +111,7 @@ void moveTo(int power, int deg, float threshold = 2.0, long time = 5000) {
 
 	stopMotors();
 }
+
 
 //The robot will turn for the degrees given in the deg parameter on a point at the power of the power parameter
 //If the method runs for more than the time parameter the method will stop for a failsafe if the gyro fails
@@ -262,7 +257,7 @@ void moveIrDown(int speed, int IR){
 //calculate and return encoder degree values based on radius of wheel and distance of motion desired
 int getDegrees(float distance, float radius = 2.0) {
 	float circumference = 2 * PI * radius;
-	return (distance / circumference) * 1440;
+	return (distance / circumference) * 1120;
 }
 
 //alternate moveTo functionality to incorporate getDegrees automatically without requiring public use of getDegrees
